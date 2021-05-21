@@ -33,6 +33,7 @@ class HttpProxyAgent extends http.Agent {
       request.removeAllListeners()
       socket.removeAllListeners()
       if (response.statusCode === 200) {
+        socket.setNoDelay()
         callback(null, socket)
       } else {
         callback(new Error(`Bad response: ${response.statusCode}`), null)
@@ -78,6 +79,7 @@ class HttpsProxyAgent extends https.Agent {
       socket.removeAllListeners()
       if (response.statusCode === 200) {
         const secureSocket = super.createConnection({ ...options, socket })
+        secureSocket.setNoDelay()
         callback(null, secureSocket)
       } else {
         callback(new Error(`Bad response: ${response.statusCode}`), null)
